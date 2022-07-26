@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+</head>
+
+<body>
+    <p id="error"></p>
+    <div class="container mb-3">
+        <div class="card" style="width: 18rem;">
+            <img class="card-img-top d-none" src="" alt="Card image cap" data-shiny-url="">
+            <div class="card-body">
+                <h5 class="card-title" style=" text-transform: capitalize;">Lorepokemon</h5>
+                <a href="#" class="btn btn-success">Change to Shiny</a>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="selected-pokemon-label">Which pokemon do you want to display?</span>
+            <select id="select-pokemon" class="form-select" aria-label="selected pokemon"
+                aria-describedby="selected-pokemon-label">
+                <option selected>Select one pokemon</option>
+                <option value="pikachu">Pikachu</option>
+                <option value="charmander">Charmander</option>
+                <option value="luxio">Luxio</option>
+            </select>
+        </div>
+    </div>
+</body>
+<script>
+    // 1. Cuando cambie el valor del selector, tenemos que detectar que opción hemos escogido. Probad que sois capaces de recuperar el valor seleccionado por el usuario con un console.log
+    let selectPokemon = document.querySelector("#select-pokemon");
+    selectPokemon.addEventListener("change", async function (event) {
+
+        let name = event.target.value;
+        let pokemon;
+
+        try {
+            let url = `https://pokeapi.co/api/v2/pokemon/${name}`;
+
+            let response = await fetch(url);
+
+            pokemon = await response.json();
+        }
+
+        catch (exception) {
+            // 1. Informar al usuario que algo ha ido mal, que pruebe más tarde
+            document.querySelector("#error").textContent = "No hemos podido recuperar el pokemon. Prueba más tarde.";
+
+            // 2. Enviaria un correo/usar un sistema de notificaciones avanzado a developers@mooners.com; indicando toda la INFO posible del error
+            // mail("Ha habido un error...")
+
+            // 3. Terminaria la ejecución del script evitando errores en la consola (o el terminal en caso de NodeJS/Express)
+            return;
+        }
+
+        console.log(pokemon)
+
+        document.querySelector("#error").textContent = "";
+        document.querySelector(".card-title").textContent = pokemon.name;
+        document.querySelector(".card-img-top").src = pokemon.sprites.front_default;
+        document.querySelector(".card-img-top").classList.remove("d-none");
+
+    });
+
+    // 2. En función de la opción escogida, 'montaremos' una URL
+    // https://pokeapi.co/api/v2/pokemon/pikachu
+    // https://pokeapi.co/api/v2/pokemon/luxio
+
+    // 3. Utilizar la función fetch para hacer la llamada a esa URL
+    // y procesar los datos. Significa, asignar al <h5> del DOM el nombre del pokemon que hemos recuperado de la llamada. Y en la etiqueta <img> debemos establecer el atricuto 'src' con el valor de la URL donde se ubica la imagen del pokemon
+</script>
+
+</html>

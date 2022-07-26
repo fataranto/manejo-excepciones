@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>HTML 5 Boilerplate</title>
+</head>
+
+<body>
+    <h1>Manejo de Expeciones</h1>
+    <p id="info"></p>
+    <script>
+        function getRandomInt(max) {
+            return Math.floor(Math.random() * max);
+        }
+
+        function getDataFromDB() {
+
+                let conexionBBDD = getRandomInt(2); // LA conexión a la base de datos a veces va bien a veces va mal
+
+                if (conexionBBDD == 1) {
+                    document.querySelector("#info").textContent =
+                        "Hola! Estos datos vienen de la BBDD. Todo ha ido a bien."
+                    return;
+                }
+
+                throw new Error("ERRORCONNECTIONDB");
+
+        }
+
+        // SOLO modificar el código a partir de aquí. NO modificar ninguna function. Utiliza el bloque try..catch para capturar los errores que eventualmente se pueden producir a la base de datos. Si capturas una excepción, Muestra un mensaje amigable al usuario. Algo así como "No hemos podido conectar a la base de datos. Intentalo más tarde." en id=info.
+      
+       // document.querySelector("#info").textContent = "";
+        try {       
+            getDataFromDB();
+        } catch (error) {
+            document.querySelector("#info").textContent =
+                "No hemos podido conectar a la base de datos. Intentalo más tarde."
+            }
+    </script>
+</body>
+
+</html>
